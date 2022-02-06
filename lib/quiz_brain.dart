@@ -57,6 +57,12 @@ class QuizBrain {
     }
   }
 
+  // int totalQuestions = ;
+
+  int totalQuestions () {
+    return _questionBank.length;
+  }
+
   void reset () {
     _questionNumber = 0;
   }

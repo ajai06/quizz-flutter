@@ -31,15 +31,23 @@ class QuizContainer extends StatefulWidget {
 }
 
 class _QuizContainerState extends State<QuizContainer> {
-  List<Widget> scoreKeeper = [];
 
+  List<Widget> scoreKeeper = [];
+  int correctAnswersNo = 0;
+  int totalQuestions = quizBrain.totalQuestions();
   void checkAnswer(bool userAnswer) {
     setState(() {
       if (quizBrain.isFinished() == true) {
-        Alert(context: context, title: "Finished!", desc: "You\'ve reached the end of the quiz.")
+        bool correctAnswer = quizBrain.getQuestionAnswer();
+        if(correctAnswer){
+          correctAnswersNo++;
+        }
+        Alert(context: context, title: "Finished!",
+            desc: "You\'ve reached the end of the quiz.\n You got $correctAnswersNo/$totalQuestions",)
             .show();
         quizBrain.reset();
         scoreKeeper = [];
+        correctAnswersNo = 0;
       } else {
         bool correctAnswer = quizBrain.getQuestionAnswer();
         if (correctAnswer == userAnswer) {
@@ -47,6 +55,7 @@ class _QuizContainerState extends State<QuizContainer> {
             Icons.check,
             color: Colors.green,
           ));
+          correctAnswersNo++;
         } else {
           scoreKeeper.add(const Icon(
             Icons.close,
